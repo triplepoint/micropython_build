@@ -8,7 +8,7 @@ The basic pattern here is this: this project provides a `Dockerfile` which, when
 After the rebuilds are complete, you can copy the generated build binaries out to the Docker host via a volume mount, or attempt to flash the target device directly from inside the container.
 
 # Use Cases
-There's a few reasons you'd want to be doing this instead of just downloading the prebuild Micropython images:
+There's a few reasons you'd want to be doing this instead of just downloading the prebuilt Micropython images:
 - Bleeding edge testing of the Micropython master branch
 - Custom compiling a Micropython firmware image packaged with your code
 - I'm sure there's more, but those are the ones that come to mind
@@ -19,7 +19,7 @@ Docker installed on your host machine.  For MacOS, the simplest way to do this i
 ```
 brew cask install docker
 ```
-Other than that, everything else is handled inside the Docker container which gets build from the `Dockerfile`.
+Other than that, everything else is handled inside the Docker container which gets built from the `Dockerfile`.
 
 ## Initial Build of the Docker Image
 Given our `Dockerfile`, we want to build a Docker image.  This image will serve as a template for containers we create afterwards.  The image will contain a default set of built ports, from a default version of the stock Micropython repository.
@@ -49,7 +49,7 @@ cp micropython/ports/esp8266/build/firmware-combined.bin /opt/micropython/artifa
 
 # Other Uses for This Image
 ## Automated Builds
-In addition to creating a terminal shell inside a container, it's also useful for call one-liner commands from the host machine. For instance:
+In addition to creating a terminal shell inside a container, it's also useful for calling one-liner commands from the host machine. For instance:
 ```
 docker run -it --rm micropython_build -v /my/mpy/program:/opt/micropython/input:ro -v /my/output/directory:/opt/micropython/artifacts \
 bash -c "cd /home/mpbuild/micropython && \
@@ -58,7 +58,7 @@ make -C ports/esp8266 && \
 cp ports/esp8266/build/firmware-combined.bin /opt/micropython/artifacts"
 ```
 
-Would create a fresh Docker container with a volume mount containing your custom Micropython modules, and another to containe the built Micropython binary.  It would then copy your modules into the micropython code, build it, and copy the binary back out to the mounted volume.  This would provide a nice one-liner for recompiling your project into a flash-able binary, without having to maintain a build environment directly on your machine.
+Would create a fresh Docker container with a volume mount containing your custom Micropython modules, and another to contain the built Micropython binary.  It would then copy your modules into the micropython code, build it, and copy the binary back out to the mounted volume.  This would provide a nice one-liner for recompiling your project into a flash-able binary, without having to maintain a build environment directly on your machine.
 
 ## Base Image for Another Image
 Also, if your build step got more complicated, it would be a simple matter to start from the Docker image generated above as a starting point for your own custom container.  Consider this Dockerfile:
